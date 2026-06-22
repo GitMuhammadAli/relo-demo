@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>relo — reel</title>
+<style>
+:root{--accent:#06b6d4;--bg:#080d10;--surface:#0f161a;--raised:#152027;--border:rgba(255,255,255,.08);--text:#e9f4f7;--muted:#7f97a1;--faint:#566971;--good:#34d399;--f:ui-sans-serif,-apple-system,"Segoe UI",Roboto,sans-serif;--mono:ui-monospace,Menlo,monospace}
+*{margin:0;padding:0;box-sizing:border-box}html,body{height:100%}
+body{background:var(--bg);color:var(--text);font-family:var(--f);font-size:14px;-webkit-font-smoothing:antialiased;overflow:hidden}
+.wrap{height:100vh;display:flex;flex-direction:column;align-items:center;padding:64px 40px;overflow:auto}
+.brand{display:flex;align-items:center;gap:9px;font-weight:700;font-size:17px;margin-bottom:8px}.brand .mk{width:26px;height:26px;border-radius:8px;background:var(--accent);display:grid;place-items:center;color:#062a31;font-weight:800}
+.h2{font-size:30px;font-weight:800;letter-spacing:-.025em;text-align:center;margin-top:18px}
+.subline{color:var(--muted);text-align:center;margin-top:8px;font-size:14px}
+.composer{width:min(640px,90vw);display:flex;gap:10px;margin-top:30px}
+.urlbox{flex:1;background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:14px 16px;font-size:14px;color:var(--text);display:flex;align-items:center;gap:10px}.urlbox svg{color:var(--muted);flex:0 0 auto}.urlbox .ph{color:var(--faint)}.urlc{color:var(--accent)}
+.gen{background:var(--accent);color:#062a31;font-weight:700;border-radius:13px;padding:0 22px;display:flex;align-items:center;gap:8px}
+.panel{width:min(820px,94vw);margin-top:28px;opacity:0;transform:translateY(10px);transition:.5s}.panel.on{opacity:1;transform:none}
+.stages{display:flex;gap:10px;justify-content:center;margin-bottom:22px}
+.stg{background:var(--surface);border:1px solid var(--border);border-radius:11px;padding:10px 16px;font-size:12.5px;font-weight:600;color:var(--faint);display:flex;align-items:center;gap:8px;transition:.3s}
+.stg.run{color:var(--accent);border-color:var(--accent)}.stg.done{color:var(--good)}.stg .d{width:7px;height:7px;border-radius:50%;background:currentColor}
+.cols{display:grid;grid-template-columns:1.2fr 1fr;gap:16px}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:18px}
+.card .lbl{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--faint);font-weight:700;margin-bottom:14px}
+.res{display:flex;align-items:center;gap:12px;padding:11px 0;border-bottom:1px solid var(--border)}.res:last-child{border-bottom:0}.res .n{width:24px;height:24px;border-radius:7px;background:var(--raised);display:grid;place-items:center;font-size:12px;color:var(--accent);font-weight:700;flex:0 0 auto}.res .t{font-weight:600;font-size:13.5px}.res .s{font-size:12px;color:var(--muted)}
+.sched .row{display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--border)}.sched .row:last-child{border-bottom:0}.sched .day{font-family:var(--mono);font-size:12px;color:var(--accent);width:54px;flex:0 0 auto}.sched .what{font-size:13px}
+.fade{animation:fade .4s both}@keyframes fade{from{opacity:0;transform:translateY(8px)}}
+.cursor{position:fixed;top:0;left:0;width:26px;height:26px;z-index:95;pointer-events:none;opacity:0;transition:transform .85s cubic-bezier(.45,0,.16,1),opacity .35s;filter:drop-shadow(0 3px 6px rgba(0,0,0,.6))}
+.ripple{position:fixed;left:0;top:0;width:40px;height:40px;border-radius:50%;border:2px solid var(--accent);z-index:94;opacity:0;transform:translate(-50%,-50%)}.ripple.go{animation:rip .6s ease-out}@keyframes rip{0%{opacity:.95;transform:translate(-50%,-50%) scale(.25)}100%{opacity:0;transform:translate(-50%,-50%) scale(1.6)}}
+</style></head>
+<body>
+<div class="wrap">
+  <div class="brand"><span class="mk">r</span> relo</div>
+  <div class="h2">Turn any link into a study plan</div>
+  <div class="subline">YouTube · Instagram · TikTok · articles</div>
+  <div class="composer">
+    <div class="urlbox" id="urlbox"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 0 7 0l3-3a5 5 0 0 0-7-7l-1.5 1.5"/><path d="M14 11a5 5 0 0 0-7 0l-3 3a5 5 0 0 0 7 7l1.5-1.5"/></svg><span class="ph" id="ph">Paste a link…</span></div>
+    <button class="gen" id="gen"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 3v4M3 5h4M6 17v4M4 19h4"/><path d="M13 3l3.5 7.5L24 14l-7.5 3.5L13 25l-3.5-7.5L2 14l7.5-3.5z"/></svg> Generate</button>
+  </div>
+  <div class="panel" id="panel">
+    <div class="stages"><div class="stg" id="s0"><span class="d"></span>Extract</div><div class="stg" id="s1"><span class="d"></span>Structure</div><div class="stg" id="s2"><span class="d"></span>Schedule</div></div>
+    <div class="cols">
+      <div class="card"><div class="lbl">Extracted · 6 resources</div>
+        <div class="res"><div class="n">1</div><div><div class="t">React Server Components, explained</div><div class="s">Video · 18 min</div></div></div>
+        <div class="res"><div class="n">2</div><div><div class="t">useEffect, the right mental model</div><div class="s">Article</div></div></div>
+        <div class="res"><div class="n">3</div><div><div class="t">Suspense & streaming SSR</div><div class="s">Video · 12 min</div></div></div>
+        <div class="res"><div class="n">4</div><div><div class="t">Data fetching patterns in Next.js</div><div class="s">Docs</div></div></div>
+      </div>
+      <div class="card sched"><div class="lbl">Spaced-repetition plan</div>
+        <div class="row"><span class="day">Day 1</span><span class="what">Server Components + useEffect</span></div>
+        <div class="row"><span class="day">Day 3</span><span class="what">Review · Suspense / streaming</span></div>
+        <div class="row"><span class="day">Day 7</span><span class="what">Recall · data fetching</span></div>
+        <div class="row"><span class="day">Day 14</span><span class="what">Final review + quiz</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="cursor" id="cur"><svg width="26" height="26" viewBox="0 0 24 24" fill="#fff" stroke="#080d10" stroke-width="1.2" stroke-linejoin="round"><path d="M5 3l14 6.5-6 1.8-1.8 6z"/></svg></div>
+<div class="ripple" id="rip"></div>
+<script>
+const cur=document.getElementById('cur'),rip=document.getElementById('rip');let cx=innerWidth/2,cy=innerHeight/2;
+const wait=ms=>new Promise(r=>setTimeout(r,ms));
+function place(){cur.style.transform=`translate(${cx-3}px,${cy-3}px)`}
+function moveTo(el){return new Promise(res=>{if(!el)return res();const r=el.getBoundingClientRect();cx=r.left+r.width*.5;cy=r.top+r.height*.5;place();setTimeout(res,880)})}
+function rippleAt(){rip.style.left=cx+'px';rip.style.top=cy+'px';rip.classList.remove('go');void rip.offsetWidth;rip.classList.add('go')}
+function cap(t){try{parent.postMessage({type:'cap',tx:t},'*')}catch(e){}}
+const URL="youtube.com/watch?v=react-deep-dive";
+async function direct(){
+  document.getElementById('panel').classList.remove('on');document.getElementById('urlbox').innerHTML='<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 0 7 0l3-3a5 5 0 0 0-7-7l-1.5 1.5"/><path d="M14 11a5 5 0 0 0-7 0l-3 3a5 5 0 0 0 7 7l1.5-1.5"/></svg><span class="ph">Paste a link…</span>';
+  ['s0','s1','s2'].forEach(id=>document.getElementById(id).className='stg');
+  cur.style.opacity='1';cx=innerWidth/2;cy=innerHeight*.4;place();
+  await wait(700);
+  cap('You save great tutorials. You never finish them.');
+  await wait(2200);
+  await moveTo(document.getElementById('urlbox'));rippleAt();await wait(250);
+  const box=document.getElementById('urlbox');let s='';
+  for(const ch of URL){s+=ch;box.innerHTML=`<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#7f97a1" stroke-width="2"><path d="M10 13a5 5 0 0 0 7 0l3-3a5 5 0 0 0-7-7l-1.5 1.5"/><path d="M14 11a5 5 0 0 0-7 0l-3 3a5 5 0 0 0 7 7l1.5-1.5"/></svg><span class="urlc">${s}</span>`;await wait(34)}
+  cap('Paste a link from anywhere.');
+  await moveTo(document.getElementById('gen'));rippleAt();await wait(250);
+  document.getElementById('panel').classList.add('on');
+  cap('relo extracts what’s worth learning…');
+  for(let i=0;i<3;i++){const st=document.getElementById('s'+i);st.classList.add('run');await wait(900);st.classList.remove('run');st.classList.add('done')}
+  cap('…and builds a spaced-repetition plan so it sticks.');
+  await wait(3400);
+  cap('');await wait(500);try{parent.postMessage({type:'end'},'*')}catch(e){}
+  await wait(2400);direct();
+}
+setTimeout(direct,500);
+</script>
+</body></html>
