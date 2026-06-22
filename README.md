@@ -16,12 +16,15 @@ Paste a YouTube, Instagram or TikTok URL — relo extracts what's worth learning
 
 </div>
 
-> ℹ️ Set your live URL in `index.html` (chrome bar) + the badge above.
-
 ---
 
 ## 🎬 Demo
-> Open [`index.html`](./index.html) for the product film (browser-framed, narrated, ~25s).
+
+https://github.com/user-attachments/assets/ecabff3f-ea6c-4991-ae51-4c64559617b0
+
+> A narrated tour of the **live product**. ▶ Also runs as an interactive film → [`index.html`](./index.html)
+
+**▶ Live app:** **https://relo-iota.vercel.app**
 
 ## The problem
 You save brilliant tutorials and never finish them. By tomorrow, they're gone.
