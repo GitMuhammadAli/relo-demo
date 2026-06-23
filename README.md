@@ -20,7 +20,7 @@ Paste a YouTube, Instagram or TikTok URL — relo extracts what's worth learning
 
 ## 🎬 Demo
 
-https://github.com/user-attachments/assets/ecabff3f-ea6c-4991-ae51-4c64559617b0
+https://github.com/user-attachments/assets/a2f494c4-013c-4673-9ba3-578f4fb79a2c
 
 > A narrated tour of the **live product**. ▶ Also runs as an interactive film → [`index.html`](./index.html)
 
